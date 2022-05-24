@@ -20,10 +20,6 @@ body {
     height: 700px;
 }
 
-/* .empty-grid {
-    border: 1px solid #343535;
-} */
-
 .board-button{
     display: flex;
     gap: 20px;
