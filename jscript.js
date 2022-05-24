@@ -1,6 +1,16 @@
+let color = 'default';
+
 const divContainer = document.querySelector('.container-div');
+
 const gridButton = document.querySelector('.change-grid');
 gridButton.addEventListener('click', changeGrid);
+
+const randomButton = document.querySelector('.random-color');
+randomButton.addEventListener('click', () => {
+    let color = 'random';
+    colorDivs(color);
+});
+
 
 function defautGrid(){
     divContainer.style.gridTemplateRows = `repeat(16, 1fr)`;
@@ -9,8 +19,7 @@ function defautGrid(){
     for (let grids = 1; grids < 257; grids++) {
         let gridDivs = document.createElement('div');
         gridDivs.className = `empty-grid`;
-        gridDivs.style.border = '1px solid #3e3f40';
-        divContainer.insertAdjacentElement('afterbegin', gridDivs);
+        divContainer.appendChild(gridDivs);
     }
 
 }
@@ -30,8 +39,7 @@ function changeGrid() {
         for (let grids = 0; userAnswer > grids; grids++) {
             let gridDivs = document.createElement('div');
             gridDivs.className = 'empty-grid';
-            gridDivs.style.border = '1px solid #3e3f40';
-            divContainer.insertAdjacentElement('afterbegin', gridDivs);
+            divContainer.appendChild(gridDivs);
         }
     }
     
@@ -40,21 +48,31 @@ function changeGrid() {
     }
     
     
-    // colorDivs();
+    colorDivs();
     
 }
 
-// function colorDivs(){
+function colorDivs(color){
     const emptyDivs = document.querySelectorAll('.empty-grid');
     //Change background color when hovered
-    emptyDivs.forEach(div => {
-        div.addEventListener('mouseenter', () => {
-            event.target.style.backgroundColor = '#a9aaab';
-        });
-    });
+    if (color === 'random'){
+        emptyDivs.forEach(div => {
+            div.addEventListener('mouseenter', () => {
+                event.target.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            });
+        });    
+    }
     
-// }
+    else {
+        emptyDivs.forEach(div => {
+            div.addEventListener('mouseenter', () => {
+                event.target.style.backgroundColor = '#a9aaab';
+            });
+        });    
+    }
+    
+}
 defautGrid();
-// colorDivs();
+colorDivs();
 
 
