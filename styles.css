@@ -10,12 +10,12 @@ body {
     width: 100vw;
     align-items: center;
     background-color: rgb(39, 39, 39);
+    gap: 20px;
 }
 
 .container-div {
     display: grid;
-    border: 5px solid #343535;
-    padding: 10px 0px;
+    border: 5px solid #6b6b6b;
     width: 700px;
     height: 700px;
 }
