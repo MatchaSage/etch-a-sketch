@@ -2,8 +2,14 @@ let divCol = document.querySelector('.column');
 let boardButton = document.querySelector('.change-board');
 let resetButton = document.querySelector('.reset-board');
 let randomColor = document.querySelector('.random-color');
+let colorPick = document.querySelector('#colorpick');
 let toggleRandom = false;
 
+
+colorPick.addEventListener('input', () => {
+    let color = colorPick.value;
+    colorBox(color);
+});
 
 randomColor.addEventListener('click', () => {
     toggleRandom = !toggleRandom
@@ -74,26 +80,24 @@ function fillBoard(userInput = 16) {
     colorBox('white');
     
 }
-
-function colorBox (color) {
+function colorBox(color) {
     let boxes = document.querySelectorAll('.box');
-    if (color === 'random'){
-        boxes.forEach(box => {
-            box.addEventListener('mouseenter', () =>{
-                box.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-            });
-        });
-        
-    }
-    
-    else {    
-        boxes.forEach(box => {
-            box.addEventListener('mouseenter', () =>{
-                box.style.backgroundColor = color;
-            });
-        });
-    }
-}
 
+    boxes.forEach( box => {
+        box.addEventListener('mouseenter', () => {
+            if (color === 'random'){
+                box.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            }
+
+            else if (color.startsWith('#')) {
+                box.style.backgroundColor = color;
+            }
+
+            else {
+                box.style.backgroundColor = 'white';
+            }
+        });
+    })
+}
 
 fillBoard();
