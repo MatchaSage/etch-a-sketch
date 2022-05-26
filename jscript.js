@@ -1,78 +1,99 @@
-let color = 'default';
+let divCol = document.querySelector('.column');
+let boardButton = document.querySelector('.change-board');
+let resetButton = document.querySelector('.reset-board');
+let randomColor = document.querySelector('.random-color');
+let toggleRandom = false;
 
-const divContainer = document.querySelector('.container-div');
 
-const gridButton = document.querySelector('.change-grid');
-gridButton.addEventListener('click', changeGrid);
-
-const randomButton = document.querySelector('.random-color');
-randomButton.addEventListener('click', () => {
-    let color = 'random';
-    colorDivs(color);
+randomColor.addEventListener('click', () => {
+    toggleRandom = !toggleRandom
+    
+    if (toggleRandom === true){
+        color = 'random';
+        colorBox(color);
+    }
+    
+    else {
+        colorBox('white');
+    }
 });
 
+resetButton.addEventListener('click',() => {
+    wipeColor();
+});
 
-function defautGrid(){
-    divContainer.style.gridTemplateRows = `repeat(16, 1fr)`;
-    divContainer.style.gridTemplateColumns = `repeat(16, 1fr)`;
-    // Loop for creating default empty div grid
-    for (let grids = 1; grids < 257; grids++) {
-        let gridDivs = document.createElement('div');
-        gridDivs.className = `empty-grid`;
-        divContainer.appendChild(gridDivs);
+boardButton.addEventListener('click', () => {
+    const answer = prompt('Size of grid');
+    if (answer <= 100 && answer > 0){
+        clearBoard();
+        fillBoard(answer);
     }
 
-}
-
-function changeGrid() {
-    let userAnswer = prompt('How many squares per side?');
-    
-    if (userAnswer <= 100 && userAnswer >= 1 &&!isNaN(userAnswer)){
-        divContainer.style.gridTemplateRows = `repeat(${userAnswer}, 1fr)`;
-        divContainer.style.gridTemplateColumns = `repeat(${userAnswer}, 1fr)`;
-        
-        while(divContainer.firstChild){
-            divContainer.removeChild(divContainer.firstChild);
-        }
-        
-        userAnswer = userAnswer ** 2;
-        for (let grids = 0; userAnswer > grids; grids++) {
-            let gridDivs = document.createElement('div');
-            gridDivs.className = 'empty-grid';
-            divContainer.appendChild(gridDivs);
-        }
-    }
-    
     else {
-        alert('Enter numbers only between 1-100');
+        alert('Size less than 100 and greater than 0');
+        clearBoard();
+        fillBoard();
+    }
+});
+
+function wipeColor() {
+    let boxes = document.querySelectorAll('.box');
+    boxes.forEach(box => {  
+        box.style.backgroundColor = 'rgb(39, 39, 39)';
+    });
+}
+
+
+function clearBoard() {
+    while (divCol.firstChild) {
+        divCol.removeChild(divCol.firstChild);
+    };
+}
+
+
+function fillBoard(userInput = 16) {
+    
+    for (let columns = 0; columns < userInput; columns++) {
+        let columns = document.createElement('div');
+        columns.className = 'divcolumns';
+        divCol.appendChild(columns);
+        
     }
     
+    let divRows = document.querySelectorAll('.divcolumns');
     
-    colorDivs();
+    divRows.forEach(i => {
+        for (let div = 0; div < userInput; div++){
+            let box = document.createElement('div');
+            box.className = 'box';
+            i.appendChild(box);
+
+        }
+    });
+
+    colorBox('white');
     
 }
 
-function colorDivs(color){
-    const emptyDivs = document.querySelectorAll('.empty-grid');
-    //Change background color when hovered
+function colorBox (color) {
+    let boxes = document.querySelectorAll('.box');
     if (color === 'random'){
-        emptyDivs.forEach(div => {
-            div.addEventListener('mouseenter', () => {
-                event.target.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        boxes.forEach(box => {
+            box.addEventListener('mouseenter', () =>{
+                box.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
             });
-        });    
+        });
+        
     }
     
-    else {
-        emptyDivs.forEach(div => {
-            div.addEventListener('mouseenter', () => {
-                event.target.style.backgroundColor = '#a9aaab';
+    else {    
+        boxes.forEach(box => {
+            box.addEventListener('mouseenter', () =>{
+                box.style.backgroundColor = color;
             });
-        });    
+        });
     }
-    
 }
-defautGrid();
-colorDivs();
 
 
+fillBoard();
